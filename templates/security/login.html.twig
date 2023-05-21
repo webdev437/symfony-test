@@ -7,9 +7,9 @@
         <meta name="description" content="Webmin - Bootstrap 4 & Angular 5 Admin Dashboard Template" />
         <meta name="author" content="potenzaglobalsolutions.com" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <title>{% block title %}Purchase-It{% endblock %}</title>
+        <title>{% block title %}Symfony-test{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="shortcut icon" href="{{ asset('images/favicon.gif') }}" />
+            <link rel="shortcut icon" href="{{ asset('images/logo-icon-light.png') }}" />
             <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900">
             <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}" />
             <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" />
@@ -46,10 +46,9 @@
                                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                                     </div>
                                     <div class="section-field">
-                                    <div class="remember-checkbox mb-30">
-                                        <input type="checkbox" class="form-control" id="remember_me" name="_remember_me" checked />
-                                        <label for="remember_me"> Remember me</label>
-                                        <a href="password-recovery.html" class="float-right">Forgot Password?</a>
+                                        <div class="remember-checkbox mb-30">
+                                            <input type="checkbox" class="form-control" id="remember_me" name="_remember_me" checked />
+                                            <label for="remember_me"> Remember me</label>
                                         </div>
                                     </div>
                                     <input type="hidden" name="_target_path" value="{{ path('user') }}" />
