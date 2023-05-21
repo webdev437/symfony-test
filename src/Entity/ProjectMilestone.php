@@ -3,18 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
-use Faker\Provider\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectMilestoneRepository")
  */
-class ProjectMilestone implements \JsonSerializable
+class ProjectMilestone
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="string", length=255)
-     * @var string
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
 
@@ -38,42 +36,38 @@ class ProjectMilestone implements \JsonSerializable
 
     /**
      * @ORM\Column(type="datetime")
-     * @var \DateTimeImmutable|null
+     * @var \DateTime|null
      */
     private $milestoneDeadline;
 
     /**
-     * @ORM\Column(type="boolean")
-     * @var bool
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $deleted;
+    private $isDeleted;
 
     /**
-     * @param Project $project
-     * @throws Exception
+     * @return string|null
      */
-    public function __construct(Project $project)
+    public function getIsDeleted(): ?string
     {
-        $this->id = Uuid::uuid();
-        $this->deleted = false;
-
-        $this->project = $project;
-        $this->milestoneDeadline = new \DateTimeImmutable();
+        return $this->isDeleted;
     }
 
     /**
-     * @return void
-     * @throws Exception
+     * @param string|null $isDeleted
+     * @return User
      */
-    public function delete() : void
+    public function setIsDeleted(?string $isDeleted): self
     {
-        $this->deleted = true;
+        $this->isDeleted = $isDeleted;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getId(): string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -113,21 +107,13 @@ class ProjectMilestone implements \JsonSerializable
     }
 
     /**
-     * @return bool
-     */
-    public function isDeleted(): bool
-    {
-        return $this->deleted;
-    }
-
-    /**
      * @return Project
      */
     public function getProject(): Project
     {
         return $this->project;
     }
- 
+
     /**
      * @param Project $project
      * @return void
@@ -138,37 +124,19 @@ class ProjectMilestone implements \JsonSerializable
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return \DateTime|null
      */
-    public function getMilestoneDeadline(): ?\DateTimeImmutable
+    public function getMilestoneDeadline(): ?\DateTime
     {
         return $this->milestoneDeadline;
     }
- 
-    /**
-     * @param \DateTimeImmutable|null $milestoneDeadline
-     * @return void
-     */
-    public function setMilestoneDeadline(?\DateTimeImmutable $milestoneDeadline): void
-    {
-        $this->milestoneDeadline = $milestoneDeadline;
-    }
 
     /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
+     * @param \DateTime|null $milestoneDeadline
+     * @return void
      */
-    public function jsonSerialize(bool $stopRecursion = false)
+    public function setMilestoneDeadline(?\DateTime $milestoneDeadline): void
     {
-        return [
-            "id" => $this->getId(),
-            "project" => $stopRecursion ? $this->project->getId() : $this->project->jsonSerialize(true),
-            "title" => $this->getTitle(),
-            "description" => $this->getDescription(),
-            "milestoneDeadline" => $this->milestoneDeadline ? $this->milestoneDeadline->format('c') : null
-        ];
+        $this->milestoneDeadline = $milestoneDeadline;
     }
 }

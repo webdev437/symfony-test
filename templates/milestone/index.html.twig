@@ -1,0 +1,78 @@
+
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ parent() }}
+    <div class="content-wrapper">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-sm-7">
+                    <h4 class="mb-0">
+                        Milestone for 
+                        <span class="text-danger">user-</span>
+                        <span class="text-warning">{{ user.getFirstName}} {{ user.getLastName}}</span>
+                        <span class="text-danger">,&nbsp; his/her project-</span>
+                        <span class="text-info">{{ project.getTitle }}</span>
+                    </h4>
+                </div>
+                <div class="col-sm-5 mb-4" style="text-align:right;">
+                    <a href="{{ path('viewProject', {'id': user.getId }) }}" class="btn btn-link" >Go back</a>
+                    <a href="#createMilestoneModal" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i> Create Milestone</a>
+                </div>
+            </div>
+            <div class="row">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success message-box col-sm-6 offset-sm-3">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- main body --> 
+            <div class="row">   
+                <div class="col-xl-12 mb-30">     
+                    <div class="card card-statistics h-70"> 
+                        <div class="card-body">
+                            {% if count > 0 %}
+                            <div class="table-responsive">
+                                <table id="datatable" class="table table-striped table-bordered p-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Deadline</th>
+                                            <th style="text-align:center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for milestone in milestones %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ milestone.getTitle }}</td>
+                                                <td>{{ milestone.getDescription }}</td>
+                                                <td>{{ milestone.getMilestoneDeadline|date('Y-m-d') }}</td>
+                                                <td style="text-align:center;">
+                                                    <a href="#deleteMilestoneModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                </td>
+                                            </tr>
+                                            {% embed "milestone/deleteMilestoneModal.html.twig" 
+                                                with {'id': user.getId, 'projectId': project.getId, 'milestoneId': milestone.getId }
+                                            %}
+                                            {% endembed %}
+                                        {% endfor %}
+                                    </tbody>    
+                                </table>
+                            </div>
+                            {% else %}
+                                <h4 style="width: 50%; margin: auto; color: pink;">Not found milestones. Please add milestone.</h4>
+                            {% endif %}
+                            {% embed "milestone/createMilestoneModal.html.twig"
+                                with { 'id': user.getId, 'projectId': project.getId }
+                            %}
+                            {% endembed %}  
+                        </div>
+                    </div>   
+                </div>
+            </div> 
+        </div>
+    </div>
+{% endblock %}

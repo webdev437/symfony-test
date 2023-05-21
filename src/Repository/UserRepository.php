@@ -39,14 +39,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * @return User[] Returns an array of User objects
      */
-    public function findSubUsersByParentId($userId)
+    public function findUndeletedUsers()
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.parentId = :parentId')
-            ->andWhere('o.isDeleted is NULL')
-            ->setParameter('parentId', $userId)
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.isDeleted is NULL')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
+
 }

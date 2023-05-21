@@ -117,13 +117,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     protected function getDefaultSuccessRedirectUrl()
     {
-        $url = 'adminDashboard';
-        if($this->security->isGranted('ROLE_CUSTOMER')) {
-            $url = 'dashboard';
-        }
-        elseif($this->security->isGranted('ROLE_ADMIN')) {
-            $url = 'adminDashboard';
-        }
+        $url = 'user';
+        // if($this->security->isGranted('ROLE_CUSTOMER')) {
+        //     $url = 'dashboard';
+        // }
+        // elseif($this->security->isGranted('ROLE_ADMIN')) {
+        //     $url = 'user';
+        // }
         return $this->urlGenerator->generate($url);
     }
 }

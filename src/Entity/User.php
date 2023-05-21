@@ -4,12 +4,18 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User implements UserInterface
 {
+    const STATUS_ACTIVE = "active";
+    const STATUS_SUSPENDED = "suspended";
+    const STATUS_INACTIVE = "inactive";
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -18,9 +24,16 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Customer", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\Column(type="boolean", options={"default"=0})
+     * @var bool
      */
-    private $customer;
+    private $enabled;
+
+    /**
+     * @ORM\Column (type="string", length=255)
+     * @var string
+     */
+    private $status;
 
     /**
      * @ORM\Column(type="string", length=180, nullable=true)
@@ -59,30 +72,22 @@ class User implements UserInterface
     private $isDeleted;
 
     /**
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="user")
+     * @var ArrayCollection
+     */
+    private $projects;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
+
+    /**
      * @return int
      */
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Customer
-     */
-    public function getCustomer(): Customer
-    {
-        return $this->customer;
-    }
- 
-    /**
-     * @param Customer $customer
-     * @return User
-     */
-    public function setCustomer(Customer $customer): self
-    {
-        $this->customer = $customer;
- 
-        return $this;
     }
 
     /**
@@ -120,7 +125,6 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -129,6 +133,45 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function getEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     * @return User
+     */
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return User
+     */
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
@@ -239,5 +282,13 @@ class User implements UserInterface
         $this->isDeleted = $isDeleted;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
     }
 }

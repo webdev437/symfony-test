@@ -1,0 +1,61 @@
+
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ parent() }}
+    <div class="content-wrapper">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-sm-9">
+                    <h4 class="mb-0">User List </h4>
+                </div>
+            </div>
+            <div class="row">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success message-box col-sm-6 offset-sm-3">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- main body --> 
+            <div class="row">   
+                <div class="col-xl-12 mb-30">     
+                    <div class="card card-statistics h-70"> 
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="datatable" class="table table-striped table-bordered p-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Email</th>
+                                            <th>First/last name</th>
+                                            <th>Number of projects</th>
+                                            <th style="text-align:center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ user.getEmail }}</td>
+                                                <td>{{ user.getFirstName }} {{ user.getLastName }}</td>
+                                                <td>{{ user.getProjects|length }}</td>
+                                                <td style="text-align:center;">
+                                                    <a href="{{ path('viewProject', {'id': user.getId}) }}" class="edit"><i class="material-icons" data-toggle="tooltip" title="View">&#xE8f4;</i></a>
+                                                    <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                </td>
+                                            </tr>
+                                            {% embed "user/deleteUserModal.html.twig" 
+                                                with {'id': user.getId}
+                                            %}
+                                            {% endembed %}
+                                        {% endfor %}
+                                    </tbody>    
+                                </table>
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+            </div> 
+        </div>
+    </div>
+{% endblock %}

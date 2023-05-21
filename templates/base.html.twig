@@ -28,13 +28,7 @@
                 <nav class="admin-header navbar navbar-default col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                 <!-- logo -->
                 <div class="text-left navbar-brand-wrapper">
-                    <a class="navbar-brand brand-logo" 
-                        {% if app.user.getRoles[0] == 'ROLE_ADMIN' %}
-                            href="{{ path('adminDashboard') }}"
-                        {% elseif app.user.getRoles[0] == 'ROLE_CUSTOMER' %}
-                            href="{{ path('dashboard') }}"
-                        {% endif %}
-                    >
+                    <a class="navbar-brand brand-logo" href="{{ path('user') }}">
                         <img src="{{ asset('images/purchase.png') }}" alt="" >
                     </a>
                     <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{ asset('images/logo-icon-dark.png') }}" alt=""></a>
@@ -44,22 +38,10 @@
                 <ul class="nav navbar-nav ml-auto">
 
                     <li class="nav-item dropdown ">
-                    <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                        <i class="ti-bell"></i>
-                        <span class="badge badge-danger notification-status"> </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-big dropdown-notifications">
-                        <div class="dropdown-header notifications">
-                        <strong>Notifications</strong>
-                        <span class="badge badge-pill badge-warning">05</span>
-                        </div>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">New registered user <small class="float-right text-muted time">Just now</small> </a>
-                        <a href="#" class="dropdown-item">New invoice received <small class="float-right text-muted time">22 mins</small> </a>
-                        <a href="#" class="dropdown-item">Server error report<small class="float-right text-muted time">7 hrs</small> </a>
-                        <a href="#" class="dropdown-item">Database report<small class="float-right text-muted time">1 days</small> </a>
-                        <a href="#" class="dropdown-item">Order confirmation<small class="float-right text-muted time">2 days</small> </a>
-                    </div>
+                        <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="ti-bell"></i>
+                            <span class="badge badge-danger notification-status"> </span>
+                        </a>
                     </li>
 
                     <li class="nav-item dropdown mr-30">
@@ -78,8 +60,6 @@
                         </div>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="text-warning ti-user"></i>Profile</a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="text-danger ti-unlock"></i>Logout</a>
                     </div>
                     </li>
@@ -91,56 +71,12 @@
                             <div class="scrollbar side-menu-bg">
                                 <ul class="nav navbar-nav side-menu" id="sidebarnav">
                                     <!-- menu item table -->
-                                    <li>
-                                        <a 
-                                            {% if app.user.getRoles[0] == 'ROLE_ADMIN' %}
-                                                href="{{ path('adminDashboard') }}"
-                                            {% elseif app.user.getRoles[0] == 'ROLE_CUSTOMER' %}
-                                                href="{{ path('dashboard') }}"
-                                            {% endif %}
-                                        >
-                                            <i class="ti-home"></i><span class="right-nav-text">Dashboard</span> 
-                                        </a>
-                                    </li>
                                     {% if app.user.getRoles[0] == "ROLE_ADMIN" %}
                                         <li>
-                                            <a href="javascript:void(0);" data-toggle="collapse" data-target="#table">
-                                                <div class="pull-left"><i class="ti-layout-tab-window"></i><span class="right-nav-text">User data</span></div>
-                                                <div class="pull-right"><i class="ti-plus"></i></div><div class="clearfix"></div>
-                                            </a>
-                                            <ul id="table" class="collapse" data-parent="#sidebarnav">
-                                                <li> <a href="{{ path('customer') }}">Customer</a> </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('orders') }}">
-                                                <i class="ti-menu-alt"></i><span class="right-nav-text">Orders List</span> 
+                                            <a href="{{ path('user') }}">
+                                                <i class="ti-menu-alt"></i><span class="right-nav-text">Users List</span> 
                                             </a>     
                                         </li> 
-                                    {% elseif app.user.getRoles[0] == 'ROLE_CUSTOMER' %}
-                                        <li>
-                                            <a href="{{ path('order') }}">
-                                                <i class="ti-menu-alt"></i><span class="right-nav-text">Order</span> 
-                                            </a> 
-                                        </li> 
-                                        <li>
-                                            <a href="{{ path('subuser') }}">
-                                                <i class="ti-user"></i><span class="right-nav-text">Sub Users List</span> 
-                                            </a>
-                                        </li>
-                                        {% if app.user.getCustomer.getCanGenerateReports == "selected" %}
-                                            <li>
-                                                <a href="javascript:void(0);" data-toggle="collapse" data-target="#table">
-                                                    <div class="pull-left"><i class="fa fa-exchange"></i><span class="right-nav-text">Shopify Endpoints</span></div>
-                                                    <div class="pull-right"><i class="ti-plus"></i></div><div class="clearfix"></div>
-                                                </a>
-                                                <ul id="table" class="collapse" data-parent="#sidebarnav">
-                                                    <li> <a href="{{ path('ordersFromShopify') }}">Orders</a> </li>
-                                                    <li> <a href="{{ path('fullfillmentOrderFromShopify') }}">Fullfillment Order</a> </li>
-                                                    <li> <a href="{{ path('giftCardFromShopify') }}">Gift Card</a> </li>
-                                                </ul>
-                                            </li>
-                                        {% endif %}
                                     {% endif %}          
                                 </ul>
                             </div> 
