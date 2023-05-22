@@ -1,5 +1,5 @@
 <!-- Delete Modal HTML -->
-<div id="deleteProjectModal" class="modal fade">
+<div id="deleteProjectModal{{id}}{{projectId}}" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="{{ path('deleteProject', {'id': id, 'projectId': projectId }) }}" method ="post">

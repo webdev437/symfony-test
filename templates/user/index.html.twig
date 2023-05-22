@@ -33,7 +33,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for user in users %}
+                                        {% for key,user in users %}
                                             <tr>
                                                 <td>{{ loop.index }}</td>
                                                 <td>{{ user.getEmail }}</td>
@@ -41,13 +41,14 @@
                                                 <td>{{ user.getProjects|length }}</td>
                                                 <td style="text-align:center;">
                                                     <a href="{{ path('viewProject', {'id': user.getId}) }}" class="edit"><i class="material-icons" data-toggle="tooltip" title="View">&#xE8f4;</i></a>
-                                                    <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                    {% if includeProjects[key] %}
+                                                        <a href="#deleteUserModal{{user.getId}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                    {% else %}
+                                                        <a href="javascript:void(0);" class="delete" data-toggle="modal"><i class="material-icons text-danger" data-toggle="tooltip" title="Delete">&#xF1b0;</i></a>
+                                                    {% endif %}
                                                 </td>
                                             </tr>
-                                            {% embed "user/deleteUserModal.html.twig" 
-                                                with {'id': user.getId}
-                                            %}
-                                            {% endembed %}
+                                            {% include "user/deleteUserModal.html.twig" with {'id': user.getId} %}
                                         {% endfor %}
                                     </tbody>    
                                 </table>

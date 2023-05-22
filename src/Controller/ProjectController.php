@@ -50,7 +50,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/user/{id}", name="viewProject")
+     * @Route("/user/{id}", name="viewProject", methods={"GET"})
      * @param Request $request
      * @param int $id
      * @return Response
@@ -60,12 +60,21 @@ class ProjectController extends AbstractController
         $this->session->remove('sucessMsg');
         $projects = $this->projectRepository->findByUser($id);
         $user = $this->userRepository->find($id);
-
+        $includeMilestones = [];
+        foreach($projects as $key => $project) {
+            $count = count($project->getProjectMilestones());
+            if ($count < 1) {
+                $includeMilestones[$key] = true;
+            } else {
+                $includeMilestones[$key] = false;
+            }
+        }
         return $this->render('project/index.html.twig', [
             'controller_name' => 'ProjectController',
             'projects' => $projects,
             'user' => $user,
-            'count' => count($projects)
+            'count' => count($projects),
+            'includeMilestones' => $includeMilestones
         ]);
     }
 

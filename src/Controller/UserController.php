@@ -55,17 +55,26 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/user", name="user")
+     * @Route("/user", name="user", methods={"GET"})
      * @return Response
      */
     public function index(): Response
     {
         $this->session->remove('sucessMsg');
         $users = $this->userRepository->findUndeletedUsers();
-
+        $includeProjects = [];
+        foreach($users as $key => $user) {
+            $count = count($user->getProjects());
+            if ($count < 1) {
+                $includeProjects[$key] = true;
+            } else {
+                $includeProjects[$key] = false;
+            }
+        }
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
-            'users' => $users
+            'users' => $users,
+            'includeProjects' => $includeProjects
         ]);
 
     }

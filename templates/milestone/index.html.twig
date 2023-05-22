@@ -51,7 +51,7 @@
                                                 <td>{{ milestone.getDescription }}</td>
                                                 <td>{{ milestone.getMilestoneDeadline|date('Y-m-d') }}</td>
                                                 <td style="text-align:center;">
-                                                    <a href="#deleteMilestoneModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                    <a href="#deleteMilestoneModal{{user.getId}}{{project.getId}}{{milestone.getId}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                                 </td>
                                             </tr>
                                             {% embed "milestone/deleteMilestoneModal.html.twig" 

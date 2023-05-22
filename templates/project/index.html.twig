@@ -36,14 +36,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for project in projects %}
+                                        {% for key,project in projects %}
                                             <tr>
                                                 <td>{{ loop.index }}</td>
                                                 <td>{{ project.getTitle }}</td>
                                                 <td>{{ project.getDescription }}</td>
                                                 <td style="text-align:center;">
                                                     <a href="{{ path('viewMilestone', {'id': user.getId, 'projectId': project.getId }) }}" class="edit"><i class="material-icons" data-toggle="tooltip" title="View">&#xE8f4;</i></a>
-                                                    <a href="#deleteProjectModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                    {% if includeMilestones[key] %}
+                                                        <a href="#deleteProjectModal{{user.getId}}{{project.getId}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                    {% else %}
+                                                        <a href="javascript:void(0);" class="delete" data-toggle="modal"><i class="material-icons text-danger" data-toggle="tooltip" title="Delete">&#xF1b0;</i></a>
+                                                    {% endif %}
                                                 </td>
                                             </tr>
                                             {% embed "project/deleteProjectModal.html.twig" 
